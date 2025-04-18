@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 
-// Mock data for billboards (same as in the billboards page)
+// Real billboard data
 const MOCK_BILLBOARDS = [
   {
     id: 1,
@@ -14,7 +14,7 @@ const MOCK_BILLBOARDS = [
     price: 1200,
     type: 'Billboard',
     views: 50000,
-    image: '/billboard1.jpg',
+    image: '/billboard.jpg',
     company: 'AdSpace Media',
     description: 'High visibility billboard on the busiest highway in San Francisco. Perfect for brand awareness campaigns.',
     features: ['High traffic area', '24/7 visibility', 'Illuminated at night', 'Weather resistant'],
@@ -37,7 +37,7 @@ const MOCK_BILLBOARDS = [
     price: 1500,
     type: 'Digital Billboard',
     views: 75000,
-    image: '/billboard2.jpg',
+    image: '/billboard.jpg',
     company: 'Urban Ads Inc.',
     description: 'Digital billboard in the heart of downtown. Rotating ads with high foot traffic exposure.',
     features: ['Digital display', 'Multiple ad rotations', 'Prime downtown location', 'Pedestrian and vehicle visibility'],
@@ -60,7 +60,7 @@ const MOCK_BILLBOARDS = [
     price: 800,
     type: 'Hoarding',
     views: 30000,
-    image: '/billboard3.jpg',
+    image: '/billboard.jpg',
     company: 'Mall Media Group',
     description: 'Strategic hoarding placement inside the busiest shopping mall in the city.',
     features: ['Indoor placement', 'High-end shopper demographic', 'Near main entrance', 'Climate controlled environment'],
@@ -83,7 +83,7 @@ const MOCK_BILLBOARDS = [
     price: 2000,
     type: 'Unipole',
     views: 100000,
-    image: '/billboard4.jpg',
+    image: '/billboard.jpg',
     company: 'Sports Advertising Co.',
     description: 'Massive unipole visible to all stadium visitors and surrounding areas. Ideal for major campaigns.',
     features: ['Massive size', 'Event day exposure', 'Visible from distance', 'Premium location'],
@@ -106,7 +106,7 @@ const MOCK_BILLBOARDS = [
     price: 600,
     type: 'Billboard',
     views: 45000,
-    image: '/billboard5.jpg',
+    image: '/billboard.jpg',
     company: 'Transit Media Solutions',
     description: 'Strategically placed billboard in one of the busiest transit stations in the city.',
     features: ['Commuter exposure', 'Extended viewing time', 'Urban demographic', 'Multiple placement options'],
@@ -129,7 +129,7 @@ const MOCK_BILLBOARDS = [
     price: 700,
     type: 'Hoarding',
     views: 20000,
-    image: '/billboard6.jpg',
+    image: '/billboard.jpg',
     company: 'Neighborhood Ads',
     description: 'Hoarding in a densely populated residential area with high visibility to locals.',
     features: ['Local demographic', 'Long-term exposure', 'Residential area', 'Community focused'],
@@ -149,9 +149,9 @@ const MOCK_BILLBOARDS = [
 export default function BillboardDetail() {
   const params = useParams()
   const billboardId = parseInt(params.id as string)
-  
+
   const billboard = MOCK_BILLBOARDS.find(b => b.id === billboardId)
-  
+
   const [inquiryForm, setInquiryForm] = useState({
     name: '',
     email: '',
@@ -161,10 +161,10 @@ export default function BillboardDetail() {
     startDate: '',
     duration: '1'
   })
-  
+
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   if (!billboard) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -178,16 +178,16 @@ export default function BillboardDetail() {
       </div>
     )
   }
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setInquiryForm(prev => ({ ...prev, [name]: value }))
   }
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    
+
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
@@ -199,7 +199,7 @@ export default function BillboardDetail() {
       setLoading(false)
     }
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -231,14 +231,16 @@ export default function BillboardDetail() {
             Back to Billboards
           </Link>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="md:flex">
             <div className="md:w-1/2 h-64 md:h-auto bg-gray-300 relative">
-              {/* This would be an actual image in production */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-gray-600">Billboard Image</p>
-              </div>
+              {/* Display the actual billboard image */}
+              <img
+                src={billboard.image}
+                alt={billboard.title}
+                className="w-full h-full object-cover"
+              />
               <div className="absolute top-4 right-4 bg-primary-600 text-white px-3 py-1 rounded-full text-sm">
                 {billboard.type}
               </div>
@@ -274,7 +276,7 @@ export default function BillboardDetail() {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-200 px-6 md:px-8 py-6">
             <h2 className="text-xl font-bold mb-4">Features</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -288,7 +290,7 @@ export default function BillboardDetail() {
               ))}
             </ul>
           </div>
-          
+
           <div className="border-t border-gray-200 px-6 md:px-8 py-6">
             <h2 className="text-xl font-bold mb-4">Specifications</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -310,7 +312,7 @@ export default function BillboardDetail() {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-200 px-6 md:px-8 py-6">
             <h2 className="text-xl font-bold mb-4">Contact Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -329,12 +331,12 @@ export default function BillboardDetail() {
             </div>
           </div>
         </div>
-        
+
         {/* Inquiry Form */}
         <div className="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
           <div className="px-6 md:px-8 py-6">
             <h2 className="text-2xl font-bold mb-6">Interested in this billboard?</h2>
-            
+
             {formSubmitted ? (
               <div className="bg-green-50 border-l-4 border-green-400 p-4">
                 <div className="flex">
@@ -466,7 +468,7 @@ export default function BillboardDetail() {
             )}
           </div>
         </div>
-        
+
         {/* Similar Billboards */}
         <div className="mt-12">
           <h2 className="text-2xl font-bold mb-6">Similar Billboards</h2>
@@ -474,10 +476,12 @@ export default function BillboardDetail() {
             {MOCK_BILLBOARDS.filter(b => b.id !== billboard.id && b.type === billboard.type).slice(0, 3).map(similarBillboard => (
               <div key={similarBillboard.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="h-48 bg-gray-300 relative">
-                  {/* This would be an actual image in production */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-gray-600">Billboard Image</p>
-                  </div>
+                  {/* Display the actual billboard image */}
+                  <img
+                    src={similarBillboard.image}
+                    alt={similarBillboard.title}
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute top-2 right-2 bg-primary-600 text-white px-2 py-1 rounded text-sm">
                     {similarBillboard.type}
                   </div>
@@ -489,7 +493,7 @@ export default function BillboardDetail() {
                     <span className="text-gray-700">Size: {similarBillboard.size}</span>
                     <span className="font-bold text-primary-700">${similarBillboard.price}/month</span>
                   </div>
-                  <Link 
+                  <Link
                     href={`/billboards/${similarBillboard.id}`}
                     className="block w-full text-center px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
                   >

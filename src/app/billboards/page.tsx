@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-// Mock data for billboards
+// Real billboard data
 const MOCK_BILLBOARDS = [
   {
     id: 1,
@@ -13,7 +13,7 @@ const MOCK_BILLBOARDS = [
     price: 1200,
     type: 'Billboard',
     views: 50000,
-    image: '/billboard1.jpg',
+    image: '/billboard.jpg',
     company: 'AdSpace Media',
     description: 'High visibility billboard on the busiest highway in San Francisco. Perfect for brand awareness campaigns.'
   },
@@ -25,7 +25,7 @@ const MOCK_BILLBOARDS = [
     price: 1500,
     type: 'Digital Billboard',
     views: 75000,
-    image: '/billboard2.jpg',
+    image: '/billboard.jpg',
     company: 'Urban Ads Inc.',
     description: 'Digital billboard in the heart of downtown. Rotating ads with high foot traffic exposure.'
   },
@@ -37,7 +37,7 @@ const MOCK_BILLBOARDS = [
     price: 800,
     type: 'Hoarding',
     views: 30000,
-    image: '/billboard3.jpg',
+    image: '/billboard.jpg',
     company: 'Mall Media Group',
     description: 'Strategic hoarding placement inside the busiest shopping mall in the city.'
   },
@@ -49,7 +49,7 @@ const MOCK_BILLBOARDS = [
     price: 2000,
     type: 'Unipole',
     views: 100000,
-    image: '/billboard4.jpg',
+    image: '/billboard.jpg',
     company: 'Sports Advertising Co.',
     description: 'Massive unipole visible to all stadium visitors and surrounding areas. Ideal for major campaigns.'
   },
@@ -61,7 +61,7 @@ const MOCK_BILLBOARDS = [
     price: 600,
     type: 'Billboard',
     views: 45000,
-    image: '/billboard5.jpg',
+    image: '/billboard.jpg',
     company: 'Transit Media Solutions',
     description: 'Strategically placed billboard in one of the busiest transit stations in the city.'
   },
@@ -73,7 +73,7 @@ const MOCK_BILLBOARDS = [
     price: 700,
     type: 'Hoarding',
     views: 20000,
-    image: '/billboard6.jpg',
+    image: '/billboard.jpg',
     company: 'Neighborhood Ads',
     description: 'Hoarding in a densely populated residential area with high visibility to locals.'
   }
@@ -87,18 +87,18 @@ export default function Billboards() {
 
   // Filter and sort billboards
   const filteredBillboards = MOCK_BILLBOARDS.filter(billboard => {
-    const matchesSearch = billboard.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = billboard.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           billboard.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           billboard.company.toLowerCase().includes(searchTerm.toLowerCase())
-    
+
     const matchesType = filterType ? billboard.type === filterType : true
-    
-    const matchesPrice = filterPrice ? 
+
+    const matchesPrice = filterPrice ?
       (filterPrice === 'under500' && billboard.price < 500) ||
       (filterPrice === '500-1000' && billboard.price >= 500 && billboard.price <= 1000) ||
       (filterPrice === '1000-2000' && billboard.price > 1000 && billboard.price <= 2000) ||
       (filterPrice === 'over2000' && billboard.price > 2000) : true
-    
+
     return matchesSearch && matchesType && matchesPrice
   }).sort((a, b) => {
     if (sortBy === 'priceAsc') return a.price - b.price
@@ -131,7 +131,7 @@ export default function Billboards() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Find the Perfect Billboard</h1>
-        
+
         {/* Search and Filters */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -197,17 +197,19 @@ export default function Billboards() {
             </div>
           </div>
         </div>
-        
+
         {/* Billboard Listings */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBillboards.length > 0 ? (
             filteredBillboards.map(billboard => (
               <div key={billboard.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="h-48 bg-gray-300 relative">
-                  {/* This would be an actual image in production */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="text-gray-600">Billboard Image</p>
-                  </div>
+                  {/* Display the actual billboard image */}
+                  <img
+                    src={billboard.image}
+                    alt={billboard.title}
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute top-2 right-2 bg-primary-600 text-white px-2 py-1 rounded text-sm">
                     {billboard.type}
                   </div>
@@ -223,7 +225,7 @@ export default function Billboards() {
                     <span className="text-gray-700">Est. Views: {billboard.views.toLocaleString()}/month</span>
                     <span className="text-gray-700">{billboard.company}</span>
                   </div>
-                  <Link 
+                  <Link
                     href={`/billboards/${billboard.id}`}
                     className="block w-full text-center px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700"
                   >

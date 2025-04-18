@@ -1,73 +1,100 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-// Mock data for dashboard
-const DASHBOARD_DATA = {
-  totalBillboards: 12,
-  activeInquiries: 8,
-  pendingBookings: 3,
-  totalRevenue: 24600,
-  recentInquiries: [
-    {
-      id: 1,
-      billboardTitle: 'Premium Highway Billboard',
-      clientName: 'John Doe',
-      clientEmail: 'john.doe@example.com',
-      date: '2023-11-15',
-      status: 'New'
-    },
-    {
-      id: 2,
-      billboardTitle: 'Downtown Digital Display',
-      clientName: 'Jane Smith',
-      clientEmail: 'jane.smith@example.com',
-      date: '2023-11-14',
-      status: 'Responded'
-    },
-    {
-      id: 3,
-      billboardTitle: 'Shopping Mall Hoarding',
-      clientName: 'Robert Johnson',
-      clientEmail: 'robert.johnson@example.com',
-      date: '2023-11-13',
-      status: 'New'
-    },
-    {
-      id: 4,
-      billboardTitle: 'Stadium Unipole',
-      clientName: 'Emily Davis',
-      clientEmail: 'emily.davis@example.com',
-      date: '2023-11-12',
-      status: 'Responded'
-    }
-  ],
-  popularBillboards: [
-    {
-      id: 1,
-      title: 'Premium Highway Billboard',
-      location: 'Highway 101, San Francisco',
-      views: 1250,
-      inquiries: 15
-    },
-    {
-      id: 4,
-      title: 'Stadium Unipole',
-      location: 'Giants Stadium, San Francisco',
-      views: 980,
-      inquiries: 12
-    },
-    {
-      id: 2,
-      title: 'Downtown Digital Display',
-      location: 'Market Street, San Francisco',
-      views: 850,
-      inquiries: 9
-    }
-  ]
+// Dashboard data interface
+interface DashboardData {
+  totalBillboards: number;
+  activeInquiries: number;
+  pendingBookings: number;
+  totalRevenue: number;
+  recentInquiries: {
+    id: string;
+    billboardTitle: string;
+    clientName: string;
+    clientEmail: string;
+    date: string;
+    status: string;
+  }[];
+  popularBillboards: {
+    id: string;
+    title: string;
+    location: string;
+    views: number;
+    inquiries: number;
+  }[];
 }
 
 export default function Dashboard() {
+  const { user } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [loading, setLoading] = useState(true)
+  const [dashboardData, setDashboardData] = useState<DashboardData>({
+    totalBillboards: 0,
+    activeInquiries: 0,
+    pendingBookings: 0,
+    totalRevenue: 0,
+    recentInquiries: [],
+    popularBillboards: []
+  })
+
+  useEffect(() => {
+    // Clean up the URL by removing the fromLogin parameter
+    if (searchParams.has('fromLogin')) {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('fromLogin')
+      router.replace(url.pathname + url.search)
+    }
+
+    const fetchDashboardData = async () => {
+      // Remove user check for development
+      // if (!user) return
+
+      try {
+        setLoading(true)
+
+        // Fetch dashboard data directly from the dashboard API
+        const dashboardResponse = await fetch('/api/dashboard')
+        const dashboardData = await dashboardResponse.json()
+
+        console.log('Dashboard data:', dashboardData)
+        setDashboardData(dashboardData)
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error)
+        // Fallback to mock data if API fails
+        setDashboardData({
+          totalBillboards: 0,
+          activeInquiries: 0,
+          pendingBookings: 0,
+          totalRevenue: 0,
+          recentInquiries: [],
+          popularBillboards: []
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDashboardData()
+  }, [user])
+
+  if (loading) {
+    return (
+      <div className="py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+          <div className="mt-8 text-center">
+            <p>Loading dashboard data...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -93,7 +120,7 @@ export default function Dashboard() {
                       </dt>
                       <dd>
                         <div className="text-lg font-medium text-gray-900">
-                          {DASHBOARD_DATA.totalBillboards}
+                          {dashboardData.totalBillboards}
                         </div>
                       </dd>
                     </dl>
@@ -125,7 +152,7 @@ export default function Dashboard() {
                       </dt>
                       <dd>
                         <div className="text-lg font-medium text-gray-900">
-                          {DASHBOARD_DATA.activeInquiries}
+                          {dashboardData.activeInquiries}
                         </div>
                       </dd>
                     </dl>
@@ -157,7 +184,7 @@ export default function Dashboard() {
                       </dt>
                       <dd>
                         <div className="text-lg font-medium text-gray-900">
-                          {DASHBOARD_DATA.pendingBookings}
+                          {dashboardData.pendingBookings}
                         </div>
                       </dd>
                     </dl>
@@ -189,7 +216,7 @@ export default function Dashboard() {
                       </dt>
                       <dd>
                         <div className="text-lg font-medium text-gray-900">
-                          ${DASHBOARD_DATA.totalRevenue.toLocaleString()}
+                          ${dashboardData.totalRevenue.toLocaleString()}
                         </div>
                       </dd>
                     </dl>
@@ -217,7 +244,7 @@ export default function Dashboard() {
           </div>
           <div className="mt-4 bg-white shadow overflow-hidden sm:rounded-md">
             <ul className="divide-y divide-gray-200">
-              {DASHBOARD_DATA.recentInquiries.map((inquiry) => (
+              {dashboardData.recentInquiries.length > 0 ? dashboardData.recentInquiries.map((inquiry) => (
                 <li key={inquiry.id}>
                   <div className="px-4 py-4 sm:px-6">
                     <div className="flex items-center justify-between">
@@ -257,7 +284,11 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </li>
-              ))}
+              )) : (
+                <li className="px-4 py-5 text-center text-gray-500">
+                  No recent inquiries
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -271,7 +302,7 @@ export default function Dashboard() {
             </Link>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {DASHBOARD_DATA.popularBillboards.map((billboard) => (
+            {dashboardData.popularBillboards.length > 0 ? dashboardData.popularBillboards.map((billboard) => (
               <div key={billboard.id} className="bg-white overflow-hidden shadow rounded-lg">
                 <div className="px-4 py-5 sm:p-6">
                   <div className="flex items-center">
@@ -306,7 +337,11 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="col-span-3 text-center py-8 text-gray-500">
+                No billboard data available yet
+              </div>
+            )}
           </div>
         </div>
 
@@ -334,7 +369,7 @@ export default function Dashboard() {
               <div className="px-4 py-5 sm:p-6">
                 <h3 className="text-lg font-medium text-gray-900">Respond to Inquiries</h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  You have {DASHBOARD_DATA.recentInquiries.filter(i => i.status === 'New').length} new inquiries that need your response.
+                  You have {dashboardData.recentInquiries.filter(i => i.status === 'New').length} new inquiries that need your response.
                 </p>
                 <div className="mt-4">
                   <Link

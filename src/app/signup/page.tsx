@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -10,6 +12,11 @@ export default function Signup() {
     confirmPassword: '',
     fullName: '',
     companyName: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
     userType: 'advertiser' // 'advertiser' or 'client'
   })
   const [loading, setLoading] = useState(false)
@@ -19,6 +26,9 @@ export default function Signup() {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
+
+  const { signUp } = useAuth()
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,16 +43,30 @@ export default function Signup() {
     }
 
     try {
-      // Here we would normally handle registration with Supabase
-      console.log('Registration attempt with:', formData)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Redirect to dashboard (this would normally happen after successful registration)
-      window.location.href = '/dashboard'
-    } catch (err) {
-      setError('Failed to create account. Please try again.')
+      // Prepare user data for Supabase
+      const userData = {
+        contact_name: formData.fullName,
+        company_name: formData.companyName,
+        contact_phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        user_type: formData.userType
+      }
+
+      await signUp(formData.email, formData.password, userData)
+
+      // Set auth cookie
+      document.cookie = 'auth_status=logged_in; path=/; max-age=86400' // 24 hours
+
+      // Add the fromLogin flag to the redirect URL
+      const dashboardURL = new URL('/dashboard', window.location.origin)
+      dashboardURL.searchParams.set('fromLogin', 'true')
+
+      router.push(dashboardURL.toString())
+    } catch (err: any) {
+      setError(err.message || 'Failed to create account. Please try again.')
       console.error('Signup error:', err)
     } finally {
       setLoading(false)
@@ -79,7 +103,7 @@ export default function Signup() {
               </div>
             </div>
           )}
-          
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="userType" className="block text-sm font-medium text-gray-700">
@@ -118,23 +142,112 @@ export default function Signup() {
             </div>
 
             {formData.userType === 'advertiser' && (
-              <div>
-                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-                  Company Name
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="companyName"
-                    name="companyName"
-                    type="text"
-                    autoComplete="organization"
-                    required
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                  />
+              <>
+                <div>
+                  <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+                    Company Name
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="companyName"
+                      name="companyName"
+                      type="text"
+                      autoComplete="organization"
+                      required
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    />
+                  </div>
                 </div>
-              </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                    Phone Number
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                    Address
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="address"
+                      name="address"
+                      type="text"
+                      autoComplete="street-address"
+                      value={formData.address}
+                      onChange={handleChange}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                      City
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="city"
+                        name="city"
+                        type="text"
+                        autoComplete="address-level2"
+                        value={formData.city}
+                        onChange={handleChange}
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                      State
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="state"
+                        name="state"
+                        type="text"
+                        autoComplete="address-level1"
+                        value={formData.state}
+                        onChange={handleChange}
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">
+                    ZIP Code
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="zipCode"
+                      name="zipCode"
+                      type="text"
+                      autoComplete="postal-code"
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                    />
+                  </div>
+                </div>
+              </>
             )}
 
             <div>

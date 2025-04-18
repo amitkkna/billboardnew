@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function DashboardLayout({
   children,
@@ -10,6 +10,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const toggleSidebar = () => {
@@ -18,6 +19,14 @@ export default function DashboardLayout({
 
   const isActive = (path: string) => {
     return pathname === path
+  }
+
+  const handleLogout = () => {
+    // Clear the auth cookie
+    document.cookie = 'auth_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+
+    // Redirect to homepage
+    router.push('/')
   }
 
   return (
@@ -122,6 +131,7 @@ export default function DashboardLayout({
                   Settings
                 </Link>
                 <button
+                  onClick={handleLogout}
                   className="w-full group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 >
                   <svg className="mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

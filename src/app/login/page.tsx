@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -9,22 +11,39 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Function to clear cookies
+  const clearCookies = () => {
+    document.cookie = 'auth_status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    window.location.reload()
+  }
+
+  const { signIn } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') || '/dashboard'
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     try {
-      // Here we would normally handle authentication with Supabase
-      console.log('Login attempt with:', { email, password })
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Redirect to dashboard (this would normally happen after successful login)
-      window.location.href = '/dashboard'
-    } catch (err) {
-      setError('Failed to login. Please check your credentials.')
+      console.log('Attempting login with:', { email, password })
+      await signIn(email, password)
+      console.log('Login successful')
+
+      // Set auth cookie
+      document.cookie = 'auth_status=logged_in; path=/; max-age=86400' // 24 hours
+      console.log('Auth cookie set')
+
+      // Add the fromLogin flag to the redirect URL
+      const redirectURL = new URL(redirectTo, window.location.origin)
+      redirectURL.searchParams.set('fromLogin', 'true')
+      console.log('Redirecting to:', redirectURL.toString())
+
+      router.push(redirectURL.toString())
+    } catch (err: any) {
+      setError(err.message || 'Failed to login. Please check your credentials.')
       console.error('Login error:', err)
     } finally {
       setLoading(false)
@@ -61,7 +80,7 @@ export default function Login() {
               </div>
             </div>
           )}
-          
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -113,9 +132,9 @@ export default function Login() {
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-primary-600 hover:text-primary-500">
+                <Link href="/reset-password" className="font-medium text-primary-600 hover:text-primary-500">
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -131,7 +150,15 @@ export default function Login() {
           </form>
 
           <div className="mt-6">
-            <div className="relative">
+            <button
+              type="button"
+              onClick={clearCookies}
+              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              Clear cookies and try again
+            </button>
+
+            <div className="relative mt-6">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
               </div>

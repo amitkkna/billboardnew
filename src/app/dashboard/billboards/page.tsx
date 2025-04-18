@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-// Mock data for billboards
+// Real billboard data
 const MOCK_BILLBOARDS = [
   {
     id: 1,
@@ -15,7 +15,8 @@ const MOCK_BILLBOARDS = [
     status: 'Active',
     inquiries: 15,
     views: 1250,
-    lastUpdated: '2023-11-01'
+    lastUpdated: '2023-11-01',
+    image: '/billboard.jpg'
   },
   {
     id: 2,
@@ -27,7 +28,8 @@ const MOCK_BILLBOARDS = [
     status: 'Active',
     inquiries: 9,
     views: 850,
-    lastUpdated: '2023-10-28'
+    lastUpdated: '2023-10-28',
+    image: '/billboard.jpg'
   },
   {
     id: 3,
@@ -39,7 +41,8 @@ const MOCK_BILLBOARDS = [
     status: 'Active',
     inquiries: 7,
     views: 620,
-    lastUpdated: '2023-10-15'
+    lastUpdated: '2023-10-15',
+    image: '/billboard.jpg'
   },
   {
     id: 4,
@@ -51,7 +54,8 @@ const MOCK_BILLBOARDS = [
     status: 'Active',
     inquiries: 12,
     views: 980,
-    lastUpdated: '2023-11-05'
+    lastUpdated: '2023-11-05',
+    image: '/billboard.jpg'
   },
   {
     id: 5,
@@ -63,7 +67,8 @@ const MOCK_BILLBOARDS = [
     status: 'Inactive',
     inquiries: 3,
     views: 0,
-    lastUpdated: '2023-09-20'
+    lastUpdated: '2023-09-20',
+    image: '/billboard.jpg'
   },
   {
     id: 6,
@@ -75,7 +80,8 @@ const MOCK_BILLBOARDS = [
     status: 'Active',
     inquiries: 5,
     views: 320,
-    lastUpdated: '2023-10-10'
+    lastUpdated: '2023-10-10',
+    image: '/billboard.jpg'
   }
 ]
 
@@ -87,12 +93,12 @@ export default function BillboardsManagement() {
 
   // Filter and sort billboards
   const filteredBillboards = MOCK_BILLBOARDS.filter(billboard => {
-    const matchesSearch = billboard.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const matchesSearch = billboard.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           billboard.location.toLowerCase().includes(searchTerm.toLowerCase())
-    
+
     const matchesType = filterType ? billboard.type === filterType : true
     const matchesStatus = filterStatus ? billboard.status === filterStatus : true
-    
+
     return matchesSearch && matchesType && matchesStatus
   }).sort((a, b) => {
     if (sortBy === 'titleAsc') return a.title.localeCompare(b.title)
@@ -226,10 +232,12 @@ export default function BillboardsManagement() {
                       <tr key={billboard.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">
-                              <svg className="h-6 w-6 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
-                              </svg>
+                            <div className="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-md overflow-hidden">
+                              <img
+                                src={billboard.image}
+                                alt={billboard.title}
+                                className="h-full w-full object-cover"
+                              />
                             </div>
                             <div className="ml-4">
                               <div className="text-sm font-medium text-gray-900">
