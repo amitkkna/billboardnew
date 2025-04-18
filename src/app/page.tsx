@@ -2,6 +2,110 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+
+// Billboard Carousel Component
+function BillboardCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length)
+  }
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + slides.length) % slides.length)
+  }
+  const slides = [
+    {
+      image: '/images/billboard-elegant.svg',
+      title: 'Premium Billboard',
+      description: 'High-impact static displays for maximum brand visibility'
+    },
+    {
+      image: '/images/unipole-elegant.svg',
+      title: 'Unipole Display',
+      description: 'Elevated structures perfect for highway and urban locations'
+    },
+    {
+      image: '/images/led-screen-elegant.svg',
+      title: 'Digital LED Screen',
+      description: 'Dynamic digital displays for engaging multimedia content'
+    }
+  ]
+
+  // Auto-advance the carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length)
+    }, 5000)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="relative w-full h-full bg-black rounded-lg">
+      {/* Slides */}
+      {slides.map((slide, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <div className="relative w-full h-full">
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              className="object-contain p-0"
+              priority={index === 0}
+            />
+
+            {/* Caption */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/90 text-white p-4 mx-auto backdrop-blur-sm shadow-lg">
+              <h3 className="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-200">{slide.title}</h3>
+              <p className="text-sm text-center text-blue-100">{slide.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {/* Navigation arrows */}
+      <button
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 text-white p-3 rounded-full hover:from-blue-600/50 hover:to-indigo-600/50 focus:outline-none z-20 backdrop-blur-sm transition-all duration-300 shadow-lg"
+        onClick={goToPrevious}
+        aria-label="Previous slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 text-white p-3 rounded-full hover:from-blue-600/50 hover:to-indigo-600/50 focus:outline-none z-20 backdrop-blur-sm transition-all duration-300 shadow-lg"
+        onClick={goToNext}
+        aria-label="Next slide"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Indicators */}
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-3 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-3 h-3 rounded-full ${
+              index === currentIndex ? 'bg-gradient-to-r from-blue-400 to-indigo-400' : 'bg-white/30'
+            } hover:bg-white/70 transition-all duration-300 shadow-sm`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function Home() {
   return (
@@ -42,13 +146,83 @@ export default function Home() {
               </div>
             </div>
             <div className="md:w-1/2 flex justify-center">
-              <div className="relative w-full h-80 md:h-96">
-                {/* Placeholder for billboard image */}
-                <div className="absolute inset-0 bg-gray-300 rounded-lg flex items-center justify-center">
-                  <p className="text-gray-600">Billboard Image</p>
+              <div className="relative w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-lg bg-black">
+                <div className="absolute top-0 left-0 right-0 bg-gradient-to-r from-blue-900/80 to-indigo-900/80 text-white p-2 z-20 text-center backdrop-blur-sm">
+                  <h3 className="text-sm font-medium tracking-wider">EXPLORE OUR ADVERTISING OPTIONS</h3>
+                </div>
+                {/* Billboard SVG Carousel */}
+                <div className="absolute inset-0">
+                  <BillboardCarousel />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Billboards Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">Featured Billboards</h2>
+          <p className="text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">Explore our selection of premium billboard locations available for your next advertising campaign.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {/* Billboard 1 */}
+            <div className="rounded-lg overflow-hidden shadow-lg">
+              <div className="relative h-64">
+                <Image
+                  src="/images/asa-billboard.svg"
+                  alt="Premium Highway Billboard"
+                  fill
+                  className="object-cover rounded-t-lg"
+                />
+              </div>
+              <div className="p-4 bg-white">
+                <h3 className="text-xl font-semibold mb-2">Premium Highway Billboard</h3>
+                <p className="text-gray-600 mb-4">High visibility location on main highway with 50,000+ daily impressions.</p>
+                <Link href="/billboards/1" className="text-primary-600 font-medium hover:text-primary-800">View Details →</Link>
+              </div>
+            </div>
+
+            {/* Billboard 2 */}
+            <div className="rounded-lg overflow-hidden shadow-lg">
+              <div className="relative h-64">
+                <Image
+                  src="/images/asa-billboard.svg"
+                  alt="Downtown Digital Display"
+                  fill
+                  className="object-cover rounded-t-lg"
+                />
+              </div>
+              <div className="p-4 bg-white">
+                <h3 className="text-xl font-semibold mb-2">Downtown Digital Display</h3>
+                <p className="text-gray-600 mb-4">Digital billboard in the heart of downtown, perfect for dynamic advertising campaigns.</p>
+                <Link href="/billboards/2" className="text-primary-600 font-medium hover:text-primary-800">View Details →</Link>
+              </div>
+            </div>
+
+            {/* Billboard 3 */}
+            <div className="rounded-lg overflow-hidden shadow-lg">
+              <div className="relative h-64">
+                <Image
+                  src="/images/asa-billboard.svg"
+                  alt="Shopping Center Billboard"
+                  fill
+                  className="object-cover rounded-t-lg"
+                />
+              </div>
+              <div className="p-4 bg-white">
+                <h3 className="text-xl font-semibold mb-2">Shopping Center Billboard</h3>
+                <p className="text-gray-600 mb-4">Strategic placement near major shopping center with high foot traffic.</p>
+                <Link href="/billboards/3" className="text-primary-600 font-medium hover:text-primary-800">View Details →</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link href="/billboards" className="px-6 py-3 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 inline-block">
+              View All Billboards
+            </Link>
           </div>
         </div>
       </section>

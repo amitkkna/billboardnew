@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark gradient background -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F2027" />
+      <stop offset="50%" stop-color="#203A43" />
+      <stop offset="100%" stop-color="#2C5364" />
+    </linearGradient>
+    <radialGradient id="spotlightGradient" cx="50%" cy="30%" r="70%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#skyGradient)"/>
+  <rect x="0" y="0" width="800" height="600" fill="url(#spotlightGradient)"/>
+  
+  <!-- Stars -->
+  <g opacity="0.8">
+    <circle cx="100" cy="80" r="1.2" fill="white"/>
+    <circle cx="200" cy="50" r="1" fill="white"/>
+    <circle cx="300" cy="100" r="1.5" fill="white"/>
+    <circle cx="400" cy="70" r="1" fill="white"/>
+    <circle cx="500" cy="120" r="1.3" fill="white"/>
+    <circle cx="600" cy="60" r="1" fill="white"/>
+    <circle cx="700" cy="90" r="1.2" fill="white"/>
+    <circle cx="150" cy="150" r="1" fill="white"/>
+    <circle cx="250" cy="180" r="1.4" fill="white"/>
+    <circle cx="350" cy="130" r="1" fill="white"/>
+    <circle cx="450" cy="160" r="1.2" fill="white"/>
+    <circle cx="550" cy="140" r="1" fill="white"/>
+    <circle cx="650" cy="170" r="1.3" fill="white"/>
+    <circle cx="750" cy="120" r="1" fill="white"/>
+  </g>
+  
+  <!-- City skyline silhouette -->
+  <path d="M0,450 L50,450 L70,420 L90,450 L120,430 L140,450 L160,410 L180,450 L200,440 L220,450 L240,420 L260,450 L280,430 L300,450 L320,410 L340,450 L360,440 L380,450 L400,420 L420,450 L440,430 L460,450 L480,410 L500,450 L520,440 L540,450 L560,420 L580,450 L600,430 L620,450 L640,410 L660,450 L680,440 L700,450 L720,420 L740,450 L760,430 L780,450 L800,450 L800,600 L0,600 Z" fill="#0A1520"/>
+  
+  <!-- Road -->
+  <rect x="0" y="450" width="800" height="150" fill="#1A1A1A"/>
+  <rect x="0" y="520" width="800" height="10" fill="#333333"/>
+  
+  <!-- Road markings -->
+  <rect x="50" y="525" width="60" height="2" fill="white"/>
+  <rect x="170" y="525" width="60" height="2" fill="white"/>
+  <rect x="290" y="525" width="60" height="2" fill="white"/>
+  <rect x="410" y="525" width="60" height="2" fill="white"/>
+  <rect x="530" y="525" width="60" height="2" fill="white"/>
+  <rect x="650" y="525" width="60" height="2" fill="white"/>
+  
+  <!-- Premium Billboard Structure -->
+  <g>
+    <!-- Support structure -->
+    <rect x="350" y="300" width="100" height="150" fill="#333333"/>
+    <rect x="340" y="300" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="320" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="340" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="360" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="380" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="400" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="420" width="120" height="10" fill="#444444"/>
+    <rect x="340" y="440" width="120" height="10" fill="#444444"/>
+    
+    <!-- Billboard panel -->
+    <rect x="200" y="100" width="400" height="200" rx="5" ry="5" fill="#FFFFFF" stroke="#666666" stroke-width="5"/>
+    
+    <!-- Billboard content -->
+    <rect x="210" y="110" width="380" height="180" rx="3" ry="3" fill="#2C3E50"/>
+    <text x="400" y="170" font-family="Arial" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFFFF">PREMIUM</text>
+    <text x="400" y="220" font-family="Arial" font-size="30" font-weight="bold" text-anchor="middle" fill="#FFFFFF">BILLBOARD</text>
+    <text x="400" y="260" font-family="Arial" font-size="18" text-anchor="middle" fill="#E0E0E0">High-Impact Advertising Solution</text>
+  </g>
+  
+  <!-- Spotlights -->
+  <g opacity="0.9">
+    <ellipse cx="250" cy="300" rx="30" ry="100" fill="#FFFFFF" opacity="0.1" transform="rotate(-30, 250, 300)"/>
+    <ellipse cx="550" cy="300" rx="30" ry="100" fill="#FFFFFF" opacity="0.1" transform="rotate(30, 550, 300)"/>
+  </g>
+  
+  <!-- Cars -->
+  <g transform="translate(600, 510) scale(0.7)">
+    <rect x="0" y="0" width="70" height="20" rx="5" ry="5" fill="#D32F2F"/>
+    <rect x="10" y="-15" width="40" height="15" rx="3" ry="3" fill="#B71C1C"/>
+    <circle cx="15" cy="20" r="7" fill="#333333"/>
+    <circle cx="15" cy="20" r="3" fill="#666666"/>
+    <circle cx="55" cy="20" r="7" fill="#333333"/>
+    <circle cx="55" cy="20" r="3" fill="#666666"/>
+    <rect x="60" y="5" width="5" height="3" fill="#FFEB3B"/>
+  </g>
+  
+  <g transform="translate(200, 500) scale(0.8)">
+    <rect x="0" y="0" width="80" height="25" rx="5" ry="5" fill="#1976D2"/>
+    <rect x="15" y="-15" width="45" height="15" rx="3" ry="3" fill="#0D47A1"/>
+    <circle cx="20" cy="25" r="8" fill="#333333"/>
+    <circle cx="20" cy="25" r="4" fill="#666666"/>
+    <circle cx="60" cy="25" r="8" fill="#333333"/>
+    <circle cx="60" cy="25" r="4" fill="#666666"/>
+    <rect x="70" y="5" width="5" height="3" fill="#FFEB3B"/>
+  </g>
+</svg>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // Real billboard data
 const MOCK_BILLBOARDS = [
@@ -13,7 +14,7 @@ const MOCK_BILLBOARDS = [
     price: 1200,
     type: 'Billboard',
     views: 50000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'AdSpace Media',
     description: 'High visibility billboard on the busiest highway in San Francisco. Perfect for brand awareness campaigns.'
   },
@@ -25,7 +26,7 @@ const MOCK_BILLBOARDS = [
     price: 1500,
     type: 'Digital Billboard',
     views: 75000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'Urban Ads Inc.',
     description: 'Digital billboard in the heart of downtown. Rotating ads with high foot traffic exposure.'
   },
@@ -37,7 +38,7 @@ const MOCK_BILLBOARDS = [
     price: 800,
     type: 'Hoarding',
     views: 30000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'Mall Media Group',
     description: 'Strategic hoarding placement inside the busiest shopping mall in the city.'
   },
@@ -49,7 +50,7 @@ const MOCK_BILLBOARDS = [
     price: 2000,
     type: 'Unipole',
     views: 100000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'Sports Advertising Co.',
     description: 'Massive unipole visible to all stadium visitors and surrounding areas. Ideal for major campaigns.'
   },
@@ -61,7 +62,7 @@ const MOCK_BILLBOARDS = [
     price: 600,
     type: 'Billboard',
     views: 45000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'Transit Media Solutions',
     description: 'Strategically placed billboard in one of the busiest transit stations in the city.'
   },
@@ -73,7 +74,7 @@ const MOCK_BILLBOARDS = [
     price: 700,
     type: 'Hoarding',
     views: 20000,
-    image: '/billboard.jpg',
+    image: '/images/asa-billboard.svg',
     company: 'Neighborhood Ads',
     description: 'Hoarding in a densely populated residential area with high visibility to locals.'
   }

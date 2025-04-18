@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Night sky background -->
+  <rect x="0" y="0" width="400" height="300" fill="#0A1929"/>
+
+  <!-- Stars -->
+  <circle cx="30" cy="30" r="1" fill="#FFFFFF"/>
+  <circle cx="60" cy="50" r="1" fill="#FFFFFF"/>
+  <circle cx="100" cy="20" r="1" fill="#FFFFFF"/>
+  <circle cx="150" cy="40" r="1" fill="#FFFFFF"/>
+  <circle cx="200" cy="15" r="1" fill="#FFFFFF"/>
+  <circle cx="250" cy="35" r="1" fill="#FFFFFF"/>
+  <circle cx="300" cy="25" r="1" fill="#FFFFFF"/>
+  <circle cx="350" cy="45" r="1" fill="#FFFFFF"/>
+  <circle cx="380" cy="15" r="1" fill="#FFFFFF"/>
+
+  <!-- City silhouette -->
+  <rect x="10" y="200" width="30" height="100" fill="#0F0F1B"/>
+  <rect x="40" y="180" width="40" height="120" fill="#0F0F1B"/>
+  <rect x="80" y="220" width="20" height="80" fill="#0F0F1B"/>
+  <rect x="100" y="190" width="35" height="110" fill="#0F0F1B"/>
+  <rect x="135" y="210" width="25" height="90" fill="#0F0F1B"/>
+  <rect x="240" y="200" width="30" height="100" fill="#0F0F1B"/>
+  <rect x="270" y="180" width="40" height="120" fill="#0F0F1B"/>
+  <rect x="310" y="220" width="20" height="80" fill="#0F0F1B"/>
+  <rect x="330" y="190" width="35" height="110" fill="#0F0F1B"/>
+  <rect x="365" y="210" width="25" height="90" fill="#0F0F1B"/>
+
+  <!-- LED Screen -->
+  <rect x="160" y="80" width="80" height="140" fill="#000000" stroke="#333333" stroke-width="2"/>
+
+  <!-- LED Screen support -->
+  <rect x="195" y="220" width="10" height="80" fill="#333333"/>
+
+  <!-- LED Screen content -->
+  <rect x="165" y="85" width="70" height="130" fill="#16213E"/>
+
+  <!-- LED pixels/content -->
+  <rect x="170" y="90" width="15" height="15" fill="#FF0000"/>
+  <rect x="190" y="90" width="15" height="15" fill="#00FF00"/>
+  <rect x="210" y="90" width="15" height="15" fill="#0000FF"/>
+
+  <rect x="170" y="110" width="15" height="15" fill="#FFFF00"/>
+  <rect x="190" y="110" width="15" height="15" fill="#FF00FF"/>
+  <rect x="210" y="110" width="15" height="15" fill="#00FFFF"/>
+
+  <rect x="170" y="130" width="55" height="10" fill="#FFFFFF"/>
+  <text x="200" y="138" font-family="Arial" font-size="8" text-anchor="middle" fill="#000000">DIGITAL DISPLAY</text>
+
+  <rect x="170" y="145" width="55" height="25" fill="#3498DB"/>
+  <text x="200" y="160" font-family="Arial" font-size="8" text-anchor="middle" fill="#FFFFFF">LED SCREEN</text>
+  <text x="200" y="170" font-family="Arial" font-size="6" text-anchor="middle" fill="#FFFFFF">High Resolution</text>
+
+  <rect x="170" y="175" width="15" height="15" fill="#E74C3C"/>
+  <rect x="190" y="175" width="15" height="15" fill="#2ECC71"/>
+  <rect x="210" y="175" width="15" height="15" fill="#F1C40F"/>
+
+  <rect x="170" y="195" width="15" height="15" fill="#9B59B6"/>
+  <rect x="190" y="195" width="15" height="15" fill="#1ABC9C"/>
+  <rect x="210" y="195" width="15" height="15" fill="#E67E22"/>
+</svg>
